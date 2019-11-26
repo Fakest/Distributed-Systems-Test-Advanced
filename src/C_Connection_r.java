@@ -43,13 +43,16 @@ public class C_Connection_r extends Thread {
             bin = new BufferedReader(new InputStreamReader(in)); //reads the input stream
 
             //read request
-            request[PRIORITY] = String.valueOf(r.nextInt(10));
-            request[NODE] = bin.readLine();
-            request[PORT] = String.valueOf(bin.readLine());
+            request[PRIORITY] = String.valueOf(r.nextInt(10)); //randomise priority
+            request[NODE] = bin.readLine();//get the name from the input stream
+            request[PORT] = String.valueOf(bin.readLine());//get the port number from the input stream
 
 
             //save the request
-            buffer.saveRequest(request);
+            System.out.println("SAVING .... \n" + request[PRIORITY] + "  " + request[NODE] + ":" + request[PORT]);
+            buffer.saveRequest(request);//save the data
+            buffer.age();//increase priority
+
             s.close(); //close the socket connection
             System.out.println("C:connection OUT    received and recorded request from " + request[NODE] + ":" + request[PORT] + "  (socket closed)");
 
@@ -59,6 +62,6 @@ public class C_Connection_r extends Thread {
             System.exit(1);
 
         }
-        buffer.show();
+        buffer.show();//show nodes that are saved
     } // end of run() method
 } // end of class

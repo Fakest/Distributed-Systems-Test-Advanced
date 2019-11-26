@@ -33,7 +33,11 @@ public class Node {
         ra = new Random();
         n_host_name = nam;
         n_port = por;
-
+        try {
+            n_ss = new ServerSocket(n_port);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Node " + n_host_name + ":" + n_port + " of DME is active ....");
 
 
@@ -54,8 +58,8 @@ public class Node {
                 n_token = new Socket(c_host, c_request_port); //send a connection to coordinator
                 OutputStream outputStream = n_token.getOutputStream(); //get the output stream from the token
                 pout = new PrintWriter(outputStream, true); //get ready to write to the output with autoflush enabled
-                pout.println(n_host_name);
-                pout.println(n_port);
+                pout.println(n_host_name);//write name
+                pout.println(n_port);//write port
                 System.out.println("Writing " + n_host_name + ":" + n_port);
                 n_token.close(); //closes the connection
                 // >>>
@@ -63,17 +67,16 @@ public class Node {
                 // this is just a synchronization
                 // Print suitable messages
 
-                n_ss = new ServerSocket(n_port);//listen for token
                 s = n_ss.accept(); //accept token
                 System.out.println("Received response");
                 //close connections
                 s.close();
-                n_ss.close();
+                //n_ss.close();
                 //>>>
                 // Sleep half a second, say
                 // This is the critical session
 
-                Thread.sleep(ra.nextInt(500));
+                Thread.sleep(ra.nextInt(500));//sleeping in critical session
                 // >>>
                 // **** Return the token
                 // this is just establishing a synch connection to the coordinator's ip and return port.
@@ -81,7 +84,7 @@ public class Node {
                 n_token = new Socket(c_host, return_port); //send connection to coordinator to return the token
                 n_token.close();//close connection
             } catch (IOException e) {
-                System.out.println(e);
+                e.printStackTrace();
                 System.exit(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();

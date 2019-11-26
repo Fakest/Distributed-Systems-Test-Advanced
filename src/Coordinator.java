@@ -7,7 +7,6 @@ public class Coordinator {
 
         int port = 7000; //reciever port number
         int m_port = 7001; //mutex port number
-        Coordinator c = new Coordinator();
 
         //initialise the coordinator values
         try {

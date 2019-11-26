@@ -17,13 +17,10 @@ public class C_buffer {
 
 
     public synchronized void saveRequest(String[] r) {
-
-        System.out.println("Save priority " + r[0]);
-        adds(r[0]);
-        System.out.println("Save node name " + r[1]);
-        adds(r[1]);
-        System.out.println("Save port " + r[2]);
-        adds(r[2]);
+        System.out.println("Save node " + r[0] + r[1] + r[2]);
+        adds(r[0]);//add priority to memory
+        adds(r[1]);//add name to memory
+        adds(r[2]);//add port to memory
     }
 
     public void show() {
@@ -38,8 +35,14 @@ public class C_buffer {
         data.add(o);
     }
 
-    public Object get(int i){
+    public synchronized Object get(int i) {
         return data.get(i);
+    }
+
+    synchronized public void remove(int i) {
+        data.remove(i);//remove the priority
+        data.remove(i);//remove name
+        data.remove(i);//remove from the port
     }
 
     synchronized public Object get() {
@@ -47,13 +50,21 @@ public class C_buffer {
         Object o = null;
 
         if (data.size() > 0) {
-            o = data.get(0);
-            data.remove(0);
+            o = data.get(0);//return the first object for display purposes
+            data.remove(0);//removes the first object
         }
         return o;
     }
 
 
+    public void age() {
+        for(int i = 0; i < data.size();  i+=3){
+            int newVal = Integer.parseInt(data.get(i).toString()) + 3;
+            data.set(i, newVal);
+            //adds one to the priority, solving the starvation problem
+        }
+    }
 }
+
 	
 	

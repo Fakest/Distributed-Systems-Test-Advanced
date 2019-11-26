@@ -28,10 +28,11 @@ public class C_mutex extends Thread {
             while (true) {
                 // >>> Print some info on the current buffer content for debuggin purposes.
                 // >>> please look at the available methods in C_buffer
-                System.out.println("C:mutex   Buffer size is " + buffer.size());
+
 
                 // if the buffer is not empty
                 if (buffer.size() != 0) {
+                    System.out.println("C:mutex   Buffer size is " + buffer.size());
                     // >>>   Getting the first (FIFO) node that is waiting for a TOKEN form the buffer
                     //       Type conversions may be needed.
 
@@ -45,12 +46,15 @@ public class C_mutex extends Thread {
                         }
                     }
 
+
                     System.out.println("Removing...");
-                    System.out.println(buffer.size());
-                    System.out.println("priority pos " + maxIndex + " node pos " + (maxIndex+1) + " port pos " + (maxIndex+2));
                     n_priority = Integer.parseInt(buffer.get(maxIndex).toString());
-                    n_host = buffer.get(maxIndex + 1).toString();
-                    n_port = Integer.parseInt(buffer.get(maxIndex + 2).toString());
+                    n_host = buffer.get(maxIndex+1).toString();
+                    n_port = Integer.parseInt(buffer.get(maxIndex+2).toString());
+
+                    buffer.remove(maxIndex);
+                    Thread.sleep(500);
+
 
                     System.out.println("Node priority " + n_priority + " Node Host " + n_host + " Node Port " + n_port);
 
@@ -67,7 +71,7 @@ public class C_mutex extends Thread {
                         e.printStackTrace();
                     }
 
-
+                    Thread.sleep(500);
                     //  >>>  **** Getting the token back
                     try {
                         s = ss_back.accept();
